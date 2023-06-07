@@ -25,4 +25,22 @@ app.get("/books/:book_id", (req, res) => {
     return res.status(200).json(book);
 });
 
+app.delete("/books/:book_id", (req,res) => {
+    const { book_id } = req.params;
+    const filteredBooks = books.filter((book) => book.id != book_id);
+    books = filteredBooks;
+    return res.status(204).json("deleted");
+});
+
+app.patch("/books/:book_id", (req, res) => {
+    const { author, title, publishedAt } = req.body;
+    const { book_id } = req.params;
+    const book = books.find((book) => book.id === book_id)
+    book_id = book.id;
+    book.title = title ? title : book.title;
+    book.author = author ? author : book.author;
+    book.publishedAt = publishedAt ? publishedAt : book.publishedAt;
+    return res.status(200).json(book);
+});
+
 app.listen(3333, () => console.log("Server is runnig"))
